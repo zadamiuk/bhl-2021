@@ -1,0 +1,12 @@
+Dzien;;;;Godziny;;;Srednia moc pobierana;;
+Dni robocze;;;;0:00-4:59;;;0.5;;
+Dni robocze;;;;5:00-7:59;;;3;;
+Dni robocze;;;;8:00-9:59;;;2;;
+Dni robocze;;;;10:00-15:59;;;1;;
+Dni robocze;;;;16:00-19:59;;;2;;
+Dni robocze;;;;20:00-23:59;;;1;;
+Dni wolne od pracy;;;;0:00-7:59;;;0.5;;
+Dni wolne od pracy;;;;8:00-11:59;;;3;;
+Dni wolne od pracy;;;;12:00-16:59;;;1;;
+Dni wolne od pracy;;;;17:00-23:59;;;2;;
+Wakacje (nieobecnl w domu);;;;0:00-23:59;;;0.5;;
