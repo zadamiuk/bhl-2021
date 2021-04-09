@@ -107,3 +107,9 @@ expected_temperatures = expected_temperatures[["Dzien", "hour_range", "Srednia m
 
 # %%
 pd.read_csv("k.csv", sep=";")
+
+# %%
+weather = pd.read_csv("hour-by-hour-weather-data.csv", sep=";")
+weather["hour"] = pd.to_datetime(weather["datetime"]).dt.hour
+weather = weather.drop(["datetime"], axis=1)
+# %%
