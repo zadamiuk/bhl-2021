@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29926.136
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BHL_cieplo", "BHL_cieplo.csproj", "{AFFE33AA-0379-4558-8FE0-72C116C745ED}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AFFE33AA-0379-4558-8FE0-72C116C745ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AFFE33AA-0379-4558-8FE0-72C116C745ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AFFE33AA-0379-4558-8FE0-72C116C745ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AFFE33AA-0379-4558-8FE0-72C116C745ED}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8D43C3F-65FE-4A09-A9FD-2E145A50E279}
+	EndGlobalSection
+EndGlobal
