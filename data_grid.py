@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 # %%
-DATE_FROM = datetime.date(2020, 1, 1)
-DATE_TO = datetime.date(2020, 3, 31)
+DATE_FROM = datetime.date(2016, 3, 1)
+DATE_TO = datetime.date(2016, 3, 31)
 # %%
 dates_range = pd.DataFrame({"date": pd.date_range(DATE_FROM, DATE_TO)})
 dates_range["key"] = 1
@@ -15,8 +15,20 @@ hours_range = pd.DataFrame({"hour": [i for i in range(0, 24)]})
 hours_range["key"] = 1
 
 date_hour_grid = pd.merge(dates_range, hours_range, on="key").drop("key", 1)
-# %%
 date_hour_grid["month"] = date_hour_grid["date"].dt.month
+date_hour_grid["weekday"] = date_hour_grid["date"].dt.weekday
+
+map_weekday = {
+    1: "Dni robocze",
+    2: "Dni robocze",
+    3: "Dni robocze",
+    4: "Dni robocze",
+    5: "Dni robocze",
+    6: "Dni wolne od pracy",
+    7: "Dni wolne od pracy",
+}
+
+date_hour_grid["weekday"] = date_hour_grid["weekday"].map(map_weekday)
 # %%
 heating_up_details = pd.read_csv("e.csv", sep=";")
 map_heating = {
@@ -50,6 +62,8 @@ expected_temperatures["hour_range"] = expected_temperatures.apply(
 )
 expected_temperatures = expected_temperatures.explode("hour_range")
 expected_temperatures = expected_temperatures[["Dzien", "Oczekiwana temperatura", "hour_range"]]
+
+expected_temperatures = expected_temperatures.drop_duplicates()
 
 # %%
 photovoltaics_details = pd.read_csv("h.csv", sep=";").iloc[:, 0:4]
@@ -109,6 +123,20 @@ map_months = {
 photovoltaics_details["miesiace"] = photovoltaics_details["miesi<ice"].map(map_months)
 photovoltaics_details = photovoltaics_details.drop("miesi<ice", axis=1)
 
+map_clouds = {"90-100%": "90:100", "60-90%": "60:90", "<60%": "0:60"}
+
+photovoltaics_details["%nieba bez chmur"] = photovoltaics_details["%nieba bez chmur"].map(
+    map_clouds
+)
+
+photovoltaics_details["low_cloud"] = (
+    photovoltaics_details["%nieba bez chmur"].str.split(":").str[0].astype(int)
+)
+photovoltaics_details["upper_cloud"] = (
+    photovoltaics_details["%nieba bez chmur"].str.split(":").str[1].astype(int)
+)
+
+photovoltaics_details = photovoltaics_details.drop_duplicates()
 # %%
 devices_power_details = pd.read_csv("j.csv", sep=";")[
     ["Dzien", "Godziny", "Srednia moc pobierana"]
@@ -123,12 +151,49 @@ devices_power_details["hour_range"] = devices_power_details.apply(
 devices_power_details = devices_power_details.explode("hour_range")
 devices_power_details = devices_power_details[["Dzien", "hour_range", "Srednia moc pobierana"]]
 
-# %%
-energy_prices = pd.read_csv("k.csv", sep=";")
+devices_power_details = devices_power_details.drop_duplicates()
 
 # %%
+energy_prices = pd.read_csv("k.csv", sep=";")
+energy_prices["miesiace"] = energy_prices["miesiace"].str.split(",")
+
+hours = energy_prices["Godziny"].str.split(pat="-", expand=True)
+hours["hour_from"] = hours[0].str.split(":").str[0].astype(int)
+hours["hour_to"] = hours[1].str.split(":").str[0].astype(int)
+energy_prices = pd.concat([energy_prices, hours], axis=1)
+energy_prices["hour_range"] = energy_prices.apply(
+    lambda x: list(range(x["hour_from"], x["hour_to"] + 1)), 1
+)
+energy_prices = energy_prices.explode("hour_range")
+energy_prices = energy_prices.explode("miesiace")
+energy_prices = energy_prices[["miesiace", "dzien", "koszt", "przychod", "hour_range"]]
+
+energy_prices = energy_prices.drop_duplicates()
+# %%
 weather = pd.read_csv("hour-by-hour-weather-data.csv", sep=";")
+weather["date"] = weather["datetime"].str[0:10]
+weather["date"] = pd.to_datetime(weather["date"], format = "%d.%m.%Y")
 weather["hour"] = pd.to_datetime(weather["datetime"]).dt.hour
 weather = weather.drop(["datetime"], axis=1)
+
+
 # %%
-extremely_powerful_table = date_hour_grid.join()
+extremely_powerful_table = date_hour_grid.merge(
+    expected_temperatures, left_on=["weekday", "hour"], right_on=["Dzien", "hour_range"], how="inner"
+).drop(["weekday", "hour_range"], axis = 1)
+
+extremely_powerful_table = extremely_powerful_table.merge(
+    photovoltaics_details,
+    left_on=["month", "hour"], right_on=["miesiace", "hour_range"], how="inner"
+).drop(["miesiace", "hour_range"], axis = 1)
+
+extremely_powerful_table = extremely_powerful_table.merge(
+    devices_power_details,
+    left_on=["Dzien", "hour"], right_on=["Dzien", "hour_range"], how="inner"
+).drop(["Dzien", "hour_range"], axis = 1)
+
+extremely_powerful_table = extremely_powerful_table.merge(
+    weather,
+    on=["hour", "date"], how="inner"
+)
+# %%
