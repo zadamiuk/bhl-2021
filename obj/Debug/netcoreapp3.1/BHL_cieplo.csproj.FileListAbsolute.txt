@@ -1,0 +1,13 @@
+E:\Pulpit\BHL\bin\Debug\netcoreapp3.1\BHL_cieplo.exe
+E:\Pulpit\BHL\bin\Debug\netcoreapp3.1\BHL_cieplo.deps.json
+E:\Pulpit\BHL\bin\Debug\netcoreapp3.1\BHL_cieplo.runtimeconfig.json
+E:\Pulpit\BHL\bin\Debug\netcoreapp3.1\BHL_cieplo.runtimeconfig.dev.json
+E:\Pulpit\BHL\bin\Debug\netcoreapp3.1\BHL_cieplo.dll
+E:\Pulpit\BHL\bin\Debug\netcoreapp3.1\BHL_cieplo.pdb
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.csprojAssemblyReference.cache
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.AssemblyInfoInputs.cache
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.AssemblyInfo.cs
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.csproj.CoreCompileInputs.cache
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.dll
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.pdb
+E:\Pulpit\BHL\obj\Debug\netcoreapp3.1\BHL_cieplo.genruntimeconfig.cache
