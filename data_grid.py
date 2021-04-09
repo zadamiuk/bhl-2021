@@ -19,7 +19,25 @@ date_hour_grid = pd.merge(dates_range, hours_range, on="key").drop("key", 1)
 date_hour_grid["month"] = date_hour_grid["date"].dt.month
 # %%
 heating_up_details = pd.read_csv("e.csv", sep=";")
-
+map_heating = {
+    ">20°C": "20:100",
+    "15°C-20°C": "15:20",
+    "5°C-15°C": "5:15",
+    "0°C-5°C": "0:5",
+    "-5°C-0°C": "-5:0",
+    "-10°C--5°C": "-10:-5",
+    "-20°C--10°C": "-20:-5",
+    "<-20°C": "-100:-20",
+}
+heating_up_details["Temperatura na zewnatrz"] = heating_up_details["Temperatura na zewnatrz"].map(
+    map_heating
+)
+heating_up_details["low_temp"] = (
+    heating_up_details["Temperatura na zewnatrz"].str.split(":").str[0].astype(int)
+)
+heating_up_details["upper_temp"] = (
+    heating_up_details["Temperatura na zewnatrz"].str.split(":").str[1].astype(int)
+)
 # %%
 expected_temperatures = pd.read_csv("f.csv", sep=";").drop(5)
 expected_temperatures["Oczekiwana temperatura"].iloc[4] = 12
@@ -103,13 +121,14 @@ devices_power_details["hour_range"] = devices_power_details.apply(
     lambda x: list(range(x["hour_from"], x["hour_to"] + 1)), 1
 )
 devices_power_details = devices_power_details.explode("hour_range")
-expected_temperatures = expected_temperatures[["Dzien", "hour_range", "Srednia moc pobierana"]]
+devices_power_details = devices_power_details[["Dzien", "hour_range", "Srednia moc pobierana"]]
 
 # %%
-pd.read_csv("k.csv", sep=";")
+energy_prices = pd.read_csv("k.csv", sep=";")
 
 # %%
 weather = pd.read_csv("hour-by-hour-weather-data.csv", sep=";")
 weather["hour"] = pd.to_datetime(weather["datetime"]).dt.hour
 weather = weather.drop(["datetime"], axis=1)
 # %%
+extremely_powerful_table = date_hour_grid.join()
