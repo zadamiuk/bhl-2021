@@ -8,5 +8,7 @@ namespace BHL_cieplo.Models
     {
         public List<Day> Days { get; set; }
         public List<TimePeriod> Periods { get; set; }
+
+
     }
 }
