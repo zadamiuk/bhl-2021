@@ -78,13 +78,19 @@ for index, row in df.iloc[:-3].iterrows():
     if energy_supply >= energy_demand:
         if energy_supply > energy_demand:
             if row.sell_energy_value >= SELL_ENERGY_PRICE_THRESHOLD:
+                if energy_sold < ENERGY_SOLD_LIMIT:
                     current_energy_strategy = "B"
+                else:
+                    current_energy_strategy = "A"
             else:
                 if accumulator_level < accumulator_capacity:
                     current_energy_strategy = "A"
                 else:
                     if (energy_supply - energy_demand) > accumulator_charge_speed:
-                            current_energy_strategy = "B"
+                            if energy_sold < ENERGY_SOLD_LIMIT:
+                                current_energy_strategy = "B"
+                            else:
+                                current_energy_strategy = "A"
                     else:
                         current_energy_strategy = "A"
         else:
@@ -98,13 +104,12 @@ for index, row in df.iloc[:-3].iterrows():
     else:
         if row.buy_energy_cost <= BUY_ENERGY_BARGAIN_PRICE_TRESHOLD:
             if accumulator_level < accumulator_capacity:
-                    current_energy_strategy = "C"
+                current_energy_strategy = "C"
             else:
-                current_energy_strategy = "A"
+                current_energy_strategy = "D"
         else:
             if accumulator_level == 0:
                 current_energy_strategy = "B"
-
             else:
                 current_energy_strategy = "D"
 

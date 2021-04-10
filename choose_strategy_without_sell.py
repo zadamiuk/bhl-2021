@@ -14,7 +14,6 @@ RECUPERATION_RATE = 0.8
 SELL_ENERGY_PRICE_THRESHOLD = 2
 BUY_ENERGY_PRICE_TRESHOLD = 1 
 BUY_ENERGY_BARGAIN_PRICE_TRESHOLD = 0.5
-ENERGY_SOLD_LIMIT = 100
 # Accumulator
 accumulator_level = 0
 accumulator_capacity = 7
@@ -78,13 +77,13 @@ for index, row in df.iloc[:-3].iterrows():
     if energy_supply >= energy_demand:
         if energy_supply > energy_demand:
             if row.sell_energy_value >= SELL_ENERGY_PRICE_THRESHOLD:
-                    current_energy_strategy = "B"
+                current_energy_strategy = "B" 
             else:
                 if accumulator_level < accumulator_capacity:
                     current_energy_strategy = "A"
                 else:
                     if (energy_supply - energy_demand) > accumulator_charge_speed:
-                            current_energy_strategy = "B"
+                        current_energy_strategy = "B"
                     else:
                         current_energy_strategy = "A"
         else:
@@ -104,20 +103,17 @@ for index, row in df.iloc[:-3].iterrows():
         else:
             if accumulator_level == 0:
                 current_energy_strategy = "B"
-
             else:
                 current_energy_strategy = "D"
 
     overflow = energy_supply - energy_demand
     if current_energy_strategy == "A":
-        accumulator_level += overflow
-        accumulator_level = min(accumulator_capacity, accumulator_level)
-        assert(accumulator_level <= accumulator_capacity)
+        accumulator_level += overflow 
     elif current_energy_strategy == "B":
-        if overflow > 0 and energy_sold + overflow < ENERGY_SOLD_LIMIT:
-            cost -= overflow * row.sell_energy_value
+        if overflow > 0:
+            # cost -= overflow * row.sell_energy_value
             energy_sold += overflow
-        elif overflow < 0:
+        else:
             cost += abs(overflow) * row.buy_energy_cost
     elif current_energy_strategy == "C":
         if overflow >= 0:
@@ -126,13 +122,13 @@ for index, row in df.iloc[:-3].iterrows():
         else:
             cost += abs(overflow) * row.buy_energy_cost
     elif current_energy_strategy == "D":
-        if overflow >= -2:
+        if overflow > -2:
             if accumulator_level >= abs(overflow):
                 accumulator_level -= abs(overflow)
                 overflow = 0
             else:
+                overflow += accumulator_level
                 accumulator_level = 0
-                accumulator_level -= overflow
                 cost += abs(overflow) * row.buy_energy_cost
         else:
             if accumulator_level >= 2:
@@ -148,12 +144,11 @@ for index, row in df.iloc[:-3].iterrows():
     df.loc[index, 'energy_strategy'] = current_energy_strategy
     house_temperature = next_house_temperature
     total_cost += cost
-    #print(f'Acc_level {accumulator_level}')
-    #print(f'Cost {cost}')
+    print(f'Acc_level {accumulator_level}')
+    print(f'Cost {cost}')
+    print(f'Total cost {total_cost}')
     print(f'Energy sold {energy_sold}')
 df
-print(f'Total cost {total_cost}')
-    
 # %%
 
 # %%
