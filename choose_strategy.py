@@ -48,7 +48,8 @@ for index, row in df.iterrows():
             heat_demand += row.energy_for_1_celsius_heatup
             next_house_temperature += 1
             print('Zwiekszamy temperature')
-        elif df.iloc[[index + COOLING_HOURS_AHEAD_THRESHOLD]].our_temperature_goal.values[0] < house_temperature or hours_left_until_cooled != -1:
+        elif df.iloc[[index + COOLING_HOURS_AHEAD_THRESHOLD]].our_temperature_goal.values[0] 
+            < house_temperature or hours_left_until_cooled != -1:
             if hours_left_until_cooled == -1:
                 hours_left_until_cooled = row.time_for_1_celsius_drop - 1
                 print(f'Zaczynamy chlodzic, pozostalo {hours_left_until_cooled} godzin chlodzenia')

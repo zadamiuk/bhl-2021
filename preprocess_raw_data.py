@@ -193,12 +193,6 @@ weather = pd.read_csv("data/raw/hour-by-hour-weather-data.csv", sep=";")
 weather["date"] = weather["datetime"].str[0:10]
 weather["date"] = pd.to_datetime(weather["date"], format="%d.%m.%Y")
 weather["hour"] = pd.to_datetime(weather["datetime"]).dt.hour
-
-cloud_map = {
-    "haze": 0,
-    "light snow": 0,
-}
-weather = weather.replace({"%nieba bez chmur": cloud_map})
 weather = weather.drop(["datetime"], axis=1)
 
 
