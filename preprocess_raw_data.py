@@ -72,6 +72,12 @@ photovoltaics_details["miesi<ice"] = photovoltaics_details["miesi<ice"].str.stri
 photovoltaics_details["godziny"] = photovoltaics_details["godziny"].str.strip().str.split(",")
 photovoltaics_details = photovoltaics_details.explode("godziny")
 
+
+hours = photovoltaics_details["godziny"].str.split("-", expand=True)
+
+hours["midnight_0"] = "24:00"
+hours["midnight_1"] = "00:00"
+
 hours.loc[
     hours[0].str.split(":").str[0].astype(int) < hours[1].str.split(":").str[0].astype(int),
     "midnight_0",
@@ -79,17 +85,13 @@ hours.loc[
     hours[0].str.split(":").str[0].astype(int) < hours[1].str.split(":").str[0].astype(int)
 ]
 
-hours = photovoltaics_details["godziny"].str.split("-", expand=True)
-hours["midnight_0"] = "23:00"
-hours["midnight_1"] = "00:00"
-
 hours["first"] = hours[0] + "-" + hours["midnight_0"]
 hours["second"] = hours["midnight_1"] + "-" + hours[1]
 hours["godziny"] = hours["first"] + "," + hours["second"]
 
 hours_1 = hours["first"].str.split(pat="-", expand=True)
 hours_1["hour_from"] = hours_1[0].str.split(":").str[0].str.strip().astype(int)
-hours_1["hour_to"] = hours_1[1].str.split(":").str[0].str.strip().astype(int)
+hours_1["hour_to"] = hours_1[1].str.split(":").str[0].str.strip().astype(int) - 1
 hours_1["hour_range_1"] = hours_1.apply(lambda x: list(range(x["hour_from"], x["hour_to"] + 1)), 1)
 hours_1 = hours_1["hour_range_1"]
 
