@@ -1,9 +1,0 @@
-﻿Temperatura na zewnatrz;Moc srednia na podtrzymanie (wszystkie Éródla);Podtrzymanie + podniesienie temp. o 1°C w ciagu 1h;Czas spadku temp o 1°C bez ogrzewania
->20°C;0;N/A;N/A
-15°C-20°C;0.5;2;6
-5°C-15°C;1;4;4
-0°C-5°C;2;5;3
--5°C-0°C;3;6;2
--10°C--5°C;5;7;1
--20°C--10°C;7;10;0.5
-<-20°C;9;12;0.25
