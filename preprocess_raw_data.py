@@ -19,13 +19,13 @@ date_hour_grid["month"] = date_hour_grid["date"].dt.month
 date_hour_grid["weekday"] = date_hour_grid["date"].dt.weekday
 
 map_weekday = {
+    0: "Dni robocze",
     1: "Dni robocze",
     2: "Dni robocze",
     3: "Dni robocze",
     4: "Dni robocze",
-    5: "Dni robocze",
+    5: "Dni wolne od pracy",
     6: "Dni wolne od pracy",
-    7: "Dni wolne od pracy",
 }
 
 date_hour_grid["weekday"] = date_hour_grid["weekday"].map(map_weekday)
