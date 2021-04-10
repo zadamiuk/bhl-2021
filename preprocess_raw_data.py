@@ -239,6 +239,10 @@ extremely_powerful_table["clouds_actual"] = extremely_powerful_table["%nieba bez
 )
 extremely_powerful_table["low_cloud"] = extremely_powerful_table["low_cloud"].astype(int)
 extremely_powerful_table["upper_cloud"] = extremely_powerful_table["upper_cloud"].astype(int)
+extremely_powerful_table = extremely_powerful_table.replace(
+    {"low_cloud": {0: -1}, "upper_cloud": {100: 101},}
+)
+
 
 extremely_powerful_table = extremely_powerful_table.drop("%nieba bez chmur", axis=1)
 
@@ -307,6 +311,9 @@ extremely_powerful_table["outside_temperature"] = extremely_powerful_table[
 ].astype(int)
 extremely_powerful_table["hour"] = extremely_powerful_table["hour"].astype(int)
 extremely_powerful_table = extremely_powerful_table.reset_index().drop("index", axis=1)
+extremely_powerful_table["our_temperature_goal"] = extremely_powerful_table[
+    "temperature_goal"
+].map({23: 22, 20: 21})
 # %%
 extremely_powerful_table.to_csv("data/processed/energy_table.csv")
 
